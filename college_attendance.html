@@ -1,0 +1,2090 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>College Attendance Management System</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#eef2f7;
+    color:#1f2937;
+}
+
+/* ================= LOGIN ================= */
+
+#loginPage{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#172554;
+}
+
+.login-box{
+    width:380px;
+    max-width:92%;
+    background:white;
+    padding:35px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+    text-align:center;
+}
+
+.login-box h1{
+    color:#172554;
+    margin-bottom:8px;
+}
+
+.login-box p{
+    color:#64748b;
+}
+
+.login-box input{
+    width:100%;
+    padding:13px;
+    margin:8px 0;
+    border:1px solid #cbd5e1;
+    border-radius:7px;
+    font-size:15px;
+}
+
+.login-btn{
+    width:100%;
+    padding:13px;
+    margin-top:10px;
+    background:#2563eb;
+    color:white;
+    border:0;
+    border-radius:7px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.login-btn:hover{
+    background:#1d4ed8;
+}
+
+#error{
+    color:#dc2626;
+    font-weight:bold;
+    margin-top:12px;
+}
+
+/* ================= MAIN ================= */
+
+#mainPage{
+    display:none;
+}
+
+header{
+    background:#172554;
+    color:white;
+    padding:22px;
+    text-align:center;
+    position:relative;
+}
+
+header h1{
+    margin:0 0 7px;
+}
+
+header p{
+    margin:0;
+}
+
+.logout{
+    position:absolute;
+    right:20px;
+    top:20px;
+    background:#dc2626;
+    color:white;
+    border:0;
+    padding:9px 14px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.container{
+    width:96%;
+    max-width:1450px;
+    margin:20px auto;
+}
+
+.panel{
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.10);
+}
+
+h2{
+    margin-top:0;
+    color:#172554;
+}
+
+input,select{
+    padding:10px;
+    border:1px solid #cbd5e1;
+    border-radius:6px;
+    margin:4px;
+    outline:none;
+}
+
+button{
+    padding:10px 15px;
+    border:0;
+    border-radius:6px;
+    cursor:pointer;
+    margin:4px;
+    font-weight:bold;
+}
+
+.primary{
+    background:#2563eb;
+    color:white;
+}
+
+.success{
+    background:#16a34a;
+    color:white;
+}
+
+.danger{
+    background:#dc2626;
+    color:white;
+}
+
+.warning{
+    background:#d97706;
+    color:white;
+}
+
+.dark{
+    background:#334155;
+    color:white;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:15px;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+
+.card h3{
+    margin:0 0 10px;
+    font-size:15px;
+}
+
+.card .number{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+}
+
+.form-grid input,
+.form-grid select{
+    width:100%;
+    margin:0;
+}
+
+.table-wrap{
+    overflow:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:800px;
+}
+
+th,td{
+    border:1px solid #dbe1e8;
+    padding:9px;
+    text-align:center;
+}
+
+th{
+    background:#1e293b;
+    color:white;
+    position:sticky;
+    top:0;
+}
+
+.p{
+    background:#dcfce7;
+    color:#166534;
+    font-weight:bold;
+}
+
+.a{
+    background:#fee2e2;
+    color:#991b1b;
+    font-weight:bold;
+}
+
+.l{
+    background:#fef3c7;
+    color:#92400e;
+    font-weight:bold;
+}
+
+.low{
+    background:#fee2e2;
+    color:#991b1b;
+    font-weight:bold;
+}
+
+.good{
+    background:#dcfce7;
+    color:#166534;
+    font-weight:bold;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:20px;
+    font-weight:bold;
+    margin-right:10px;
+}
+
+.hidden{
+    display:none;
+}
+
+@media(max-width:1000px){
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .form-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .logout{
+        position:static;
+        margin-top:15px;
+    }
+}
+
+@media(max-width:600px){
+
+    .container{
+        width:98%;
+    }
+
+    .cards,
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    input,
+    select,
+    button{
+        width:100%;
+        margin:5px 0;
+    }
+}
+
+@media print{
+
+    header,
+    .no-print{
+        display:none!important;
+    }
+
+    body{
+        background:white;
+    }
+
+    .panel{
+        box-shadow:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+
+<!-- ================= LOGIN PAGE ================= -->
+
+<div id="loginPage">
+
+<div class="login-box">
+
+<h1>🎓 College Login</h1>
+
+<p>Attendance Management System</p>
+
+<input
+    type="text"
+    id="username"
+    placeholder="Username">
+
+<input
+    type="password"
+    id="password"
+    placeholder="Password"
+    onkeydown="if(event.key==='Enter') login()">
+
+<button
+    class="login-btn"
+    onclick="login()">
+
+    🔐 Login
+
+</button>
+
+<div id="error"></div>
+
+</div>
+
+</div>
+
+
+<!-- ================= MAIN PAGE ================= -->
+
+<div id="mainPage">
+
+<header>
+
+<h1>🎓 College Attendance Management System</h1>
+
+<p>Student • Subject • Daily • Monthly Attendance</p>
+
+<button
+class="logout"
+onclick="logout()">
+
+🚪 Logout
+
+</button>
+
+</header>
+
+
+<div class="container">
+
+
+<!-- DASHBOARD -->
+
+<div class="cards">
+
+<div class="card">
+<h3>👨‍🎓 Total Students</h3>
+<div class="number" id="studentCount">0</div>
+</div>
+
+<div class="card">
+<h3>📅 Total Classes</h3>
+<div class="number" id="classCount">0</div>
+</div>
+
+<div class="card">
+<h3>🟢 Present</h3>
+<div class="number" id="presentCount">0</div>
+</div>
+
+<div class="card">
+<h3>🔴 Absent</h3>
+<div class="number" id="absentCount">0</div>
+</div>
+
+<div class="card">
+<h3>📊 Average Attendance</h3>
+<div class="number" id="avgAttendance">0%</div>
+</div>
+
+</div>
+
+
+<!-- COLLEGE INFORMATION -->
+
+<div class="panel no-print">
+
+<h2>🏫 College Information</h2>
+
+<input
+id="collegeName"
+placeholder="College / University Name"
+style="width:60%">
+
+<input
+id="department"
+placeholder="Department"
+style="width:30%">
+
+<br>
+
+<button
+class="primary"
+onclick="saveCollegeInfo()">
+
+💾 Save College Information
+
+</button>
+
+</div>
+
+
+<!-- STUDENT REGISTRATION -->
+
+<div class="panel no-print">
+
+<h2>👨‍🎓 Student Registration</h2>
+
+<div class="form-grid">
+
+<input
+id="roll"
+placeholder="Roll Number">
+
+<input
+id="studentName"
+placeholder="Student Name">
+
+<input
+id="course"
+placeholder="Course e.g. BCA">
+
+<select id="semester">
+
+<option value="">Select Semester</option>
+<option>1st Semester</option>
+<option>2nd Semester</option>
+<option>3rd Semester</option>
+<option>4th Semester</option>
+<option>5th Semester</option>
+<option>6th Semester</option>
+<option>7th Semester</option>
+<option>8th Semester</option>
+
+</select>
+
+</div>
+
+<br>
+
+<button
+class="primary"
+onclick="addStudent()">
+
+➕ Add Student
+
+</button>
+
+<button
+class="dark"
+onclick="clearStudentForm()">
+
+Clear
+
+</button>
+
+</div>
+
+
+<!-- STUDENT LIST -->
+
+<div class="panel">
+
+<h2>👥 Student List</h2>
+
+<div class="no-print">
+
+<input
+id="studentSearch"
+placeholder="🔎 Search Roll No / Name"
+onkeyup="showStudents()">
+
+<select
+id="courseSearch"
+onchange="showStudents()">
+
+<option value="">All Courses</option>
+
+</select>
+
+<select
+id="semesterSearch"
+onchange="showStudents()">
+
+<option value="">All Semesters</option>
+<option>1st Semester</option>
+<option>2nd Semester</option>
+<option>3rd Semester</option>
+<option>4th Semester</option>
+<option>5th Semester</option>
+<option>6th Semester</option>
+<option>7th Semester</option>
+<option>8th Semester</option>
+
+</select>
+
+</div>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+<th>S.No.</th>
+<th>Roll No.</th>
+<th>Name</th>
+<th>Course</th>
+<th>Semester</th>
+<th>Attendance %</th>
+<th class="no-print">Action</th>
+</tr>
+
+</thead>
+
+<tbody id="studentTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- DAILY ATTENDANCE -->
+
+<div class="panel no-print">
+
+<h2>📝 Daily Attendance</h2>
+
+<div class="form-grid">
+
+<input
+type="date"
+id="attDate">
+
+<select id="attSubject">
+
+<option value="">
+Select Subject
+</option>
+
+</select>
+
+</div>
+
+<br>
+
+<button
+class="success"
+onclick="openDailyAttendance()">
+
+📋 Mark Attendance
+
+</button>
+
+</div>
+
+
+<!-- DAILY ATTENDANCE -->
+
+<div
+class="panel hidden"
+id="dailyPanel">
+
+<h2 id="dailyTitle">
+Daily Attendance
+</h2>
+
+<div>
+
+<span class="badge p">
+P = Present
+</span>
+
+<span class="badge a">
+A = Absent
+</span>
+
+<span class="badge l">
+L = Leave
+</span>
+
+</div>
+
+<br>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+<th>S.No.</th>
+<th>Roll No.</th>
+<th>Student Name</th>
+<th>Course</th>
+<th>Semester</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody id="dailyTable"></tbody>
+
+</table>
+
+</div>
+
+<br>
+
+<button
+class="primary"
+onclick="saveDailyAttendance()">
+
+💾 Save Daily Attendance
+
+</button>
+
+</div>
+
+
+<!-- SUBJECT MANAGEMENT -->
+
+<div class="panel no-print">
+
+<h2>📚 Subject Management</h2>
+
+<input
+id="subjectName"
+placeholder="Enter Subject Name">
+
+<button
+class="primary"
+onclick="addSubject()">
+
+➕ Add Subject
+
+</button>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+<th>S.No.</th>
+<th>Subject</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="subjectTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- MONTHLY REPORT -->
+
+<div class="panel">
+
+<h2>📊 Monthly Attendance Report</h2>
+
+<div class="no-print">
+
+<input
+type="month"
+id="reportMonth"
+onchange="showMonthlyReport()">
+
+<select
+id="reportSubject"
+onchange="showMonthlyReport()">
+
+<option value="">
+All Subjects
+</option>
+
+</select>
+
+</div>
+
+<br>
+
+<div class="table-wrap">
+
+<table>
+
+<thead id="monthHead"></thead>
+
+<tbody id="monthBody"></tbody>
+
+</table>
+
+</div>
+
+<br>
+
+<div class="no-print">
+
+<button
+class="success"
+onclick="downloadCSV()">
+
+📥 Download CSV / Excel
+
+</button>
+
+<button
+class="dark"
+onclick="window.print()">
+
+🖨️ Print Report
+
+</button>
+
+<button
+class="danger"
+onclick="deleteAllData()">
+
+🗑️ Delete All Data
+
+</button>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   LOGIN SYSTEM
+===================================================== */
+
+/*
+   DEFAULT LOGIN:
+
+   Username: admin
+   Password: 12345
+
+   Change these two values if required.
+*/
+
+const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = "12345";
+
+
+function login(){
+
+let username =
+document.getElementById("username").value.trim();
+
+let password =
+document.getElementById("password").value;
+
+
+if(
+username === ADMIN_USERNAME &&
+password === ADMIN_PASSWORD
+){
+
+sessionStorage.setItem(
+"collegeLoggedIn",
+"true"
+);
+
+document.getElementById("loginPage")
+.style.display="none";
+
+document.getElementById("mainPage")
+.style.display="block";
+
+}else{
+
+document.getElementById("error")
+.innerText =
+"❌ Wrong Username or Password";
+
+}
+
+}
+
+
+function logout(){
+
+sessionStorage.removeItem(
+"collegeLoggedIn"
+);
+
+location.reload();
+
+}
+
+
+/* CHECK LOGIN */
+
+if(
+sessionStorage.getItem("collegeLoggedIn")
+===
+"true"
+){
+
+document.getElementById("loginPage")
+.style.display="none";
+
+document.getElementById("mainPage")
+.style.display="block";
+
+}
+
+
+/* =====================================================
+   DATA
+===================================================== */
+
+let students =
+JSON.parse(
+localStorage.getItem("students")
+) || [];
+
+let subjects =
+JSON.parse(
+localStorage.getItem("subjects")
+) ||
+[
+"English",
+"Computer",
+"Mathematics"
+];
+
+let attendance =
+JSON.parse(
+localStorage.getItem("attendance")
+) || [];
+
+let college =
+JSON.parse(
+localStorage.getItem("college")
+) || {};
+
+
+/* =====================================================
+   INITIAL SETTINGS
+===================================================== */
+
+document.getElementById("attDate").value =
+new Date()
+.toISOString()
+.split("T")[0];
+
+document.getElementById("reportMonth").value =
+new Date()
+.toISOString()
+.slice(0,7);
+
+document.getElementById("collegeName").value =
+college.name || "";
+
+document.getElementById("department").value =
+college.department || "";
+
+
+/* =====================================================
+   SAVE DATA
+===================================================== */
+
+function saveData(){
+
+localStorage.setItem(
+"students",
+JSON.stringify(students)
+);
+
+localStorage.setItem(
+"subjects",
+JSON.stringify(subjects)
+);
+
+localStorage.setItem(
+"attendance",
+JSON.stringify(attendance)
+);
+
+}
+
+
+/* =====================================================
+   COLLEGE INFORMATION
+===================================================== */
+
+function saveCollegeInfo(){
+
+college={
+
+name:
+document.getElementById("collegeName").value,
+
+department:
+document.getElementById("department").value
+
+};
+
+localStorage.setItem(
+"college",
+JSON.stringify(college)
+);
+
+alert(
+"College information saved successfully."
+);
+
+}
+
+
+/* =====================================================
+   ADD STUDENT
+===================================================== */
+
+function addStudent(){
+
+let roll =
+document.getElementById("roll")
+.value.trim();
+
+let name =
+document.getElementById("studentName")
+.value.trim();
+
+let course =
+document.getElementById("course")
+.value.trim();
+
+let semester =
+document.getElementById("semester")
+.value;
+
+
+if(
+!roll ||
+!name ||
+!course ||
+!semester
+){
+
+alert(
+"Please fill all student details."
+);
+
+return;
+
+}
+
+
+if(
+students.some(
+s=>s.roll===roll
+)
+){
+
+alert(
+"This Roll Number already exists."
+);
+
+return;
+
+}
+
+
+students.push({
+
+roll:roll,
+name:name,
+course:course,
+semester:semester
+
+});
+
+
+saveData();
+
+clearStudentForm();
+
+refresh();
+
+alert(
+"Student added successfully."
+);
+
+}
+
+
+/* =====================================================
+   CLEAR FORM
+===================================================== */
+
+function clearStudentForm(){
+
+document.getElementById("roll").value="";
+document.getElementById("studentName").value="";
+document.getElementById("course").value="";
+document.getElementById("semester").value="";
+
+}
+
+
+/* =====================================================
+   STUDENT LIST
+===================================================== */
+
+function showStudents(){
+
+let table =
+document.getElementById("studentTable");
+
+table.innerHTML="";
+
+
+let search =
+document.getElementById("studentSearch")
+.value
+.toLowerCase();
+
+let course =
+document.getElementById("courseSearch")
+.value;
+
+let semester =
+document.getElementById("semesterSearch")
+.value;
+
+
+let list =
+students.filter(s=>
+
+(
+s.roll.toLowerCase()
+.includes(search)
+
+||
+
+s.name.toLowerCase()
+.includes(search)
+)
+
+&&
+
+(
+course==="" ||
+s.course===course
+)
+
+&&
+
+(
+semester==="" ||
+s.semester===semester
+)
+
+);
+
+
+list.forEach((s,i)=>{
+
+let row =
+table.insertRow();
+
+row.insertCell(0)
+.innerHTML=i+1;
+
+row.insertCell(1)
+.innerHTML=s.roll;
+
+row.insertCell(2)
+.innerHTML=s.name;
+
+row.insertCell(3)
+.innerHTML=s.course;
+
+row.insertCell(4)
+.innerHTML=s.semester;
+
+
+let percent =
+studentPercentage(s.roll);
+
+
+let pc =
+row.insertCell(5);
+
+pc.innerHTML =
+percent+"%";
+
+pc.className =
+percent<75
+?
+"low"
+:
+"good";
+
+
+row.insertCell(6)
+.innerHTML=
+
+`<button
+class="danger"
+onclick="deleteStudent('${s.roll}')">
+Delete
+</button>`;
+
+});
+
+}
+
+
+/* =====================================================
+   STUDENT PERCENTAGE
+===================================================== */
+
+function studentPercentage(roll){
+
+let data =
+attendance.filter(
+a=>a.roll===roll
+);
+
+
+let present =
+data.filter(
+a=>a.status==="P"
+).length;
+
+
+let total =
+data.filter(
+a=>
+a.status==="P" ||
+a.status==="A"
+).length;
+
+
+if(total===0)
+return 0;
+
+
+return Number(
+(
+present/total*100
+).toFixed(1)
+);
+
+}
+
+
+/* =====================================================
+   DELETE STUDENT
+===================================================== */
+
+function deleteStudent(roll){
+
+if(
+!confirm(
+"Delete this student and all attendance?"
+)
+)
+return;
+
+
+students =
+students.filter(
+s=>s.roll!==roll
+);
+
+
+attendance =
+attendance.filter(
+a=>a.roll!==roll
+);
+
+
+saveData();
+
+refresh();
+
+}
+
+
+/* =====================================================
+   SUBJECT
+===================================================== */
+
+function addSubject(){
+
+let subject =
+document.getElementById("subjectName")
+.value.trim();
+
+
+if(!subject){
+
+alert(
+"Enter subject name."
+);
+
+return;
+
+}
+
+
+if(
+subjects.includes(subject)
+){
+
+alert(
+"Subject already exists."
+);
+
+return;
+
+}
+
+
+subjects.push(subject);
+
+saveData();
+
+document.getElementById(
+"subjectName"
+).value="";
+
+refresh();
+
+}
+
+
+function showSubjects(){
+
+let table =
+document.getElementById(
+"subjectTable"
+);
+
+table.innerHTML="";
+
+
+subjects.forEach(
+(subject,i)=>{
+
+let row =
+table.insertRow();
+
+row.insertCell(0)
+.innerHTML=i+1;
+
+row.insertCell(1)
+.innerHTML=subject;
+
+row.insertCell(2)
+.innerHTML=
+
+`<button
+class="danger"
+onclick="deleteSubject(${i})">
+Delete
+</button>`;
+
+});
+
+}
+
+
+function deleteSubject(index){
+
+let subject =
+subjects[index];
+
+if(
+!confirm(
+"Delete subject '"+subject+"'?"
+)
+)
+return;
+
+
+subjects.splice(index,1);
+
+
+/* Delete only attendance of that subject */
+
+attendance =
+attendance.filter(
+a=>a.subject!==subject
+);
+
+
+saveData();
+
+refresh();
+
+}
+
+
+/* =====================================================
+   SUBJECT DROPDOWN
+===================================================== */
+
+function loadSubjects(){
+
+let att =
+document.getElementById(
+"attSubject"
+);
+
+let report =
+document.getElementById(
+"reportSubject"
+);
+
+
+att.innerHTML =
+'<option value="">Select Subject</option>';
+
+report.innerHTML =
+'<option value="">All Subjects</option>';
+
+
+subjects.forEach(
+subject=>{
+
+let o1 =
+document.createElement(
+"option"
+);
+
+o1.value=subject;
+o1.textContent=subject;
+
+att.appendChild(o1);
+
+
+let o2 =
+document.createElement(
+"option"
+);
+
+o2.value=subject;
+o2.textContent=subject;
+
+report.appendChild(o2);
+
+});
+
+}
+
+
+/* =====================================================
+   COURSE FILTER
+===================================================== */
+
+function loadCourses(){
+
+let select =
+document.getElementById(
+"courseSearch"
+);
+
+let courses =
+[
+...new Set(
+students.map(
+s=>s.course
+)
+)
+];
+
+
+select.innerHTML =
+'<option value="">All Courses</option>';
+
+
+courses.forEach(
+course=>{
+
+let option =
+document.createElement(
+"option"
+);
+
+option.value=course;
+option.textContent=course;
+
+select.appendChild(option);
+
+});
+
+}
+
+
+/* =====================================================
+   DAILY ATTENDANCE
+===================================================== */
+
+function openDailyAttendance(){
+
+let date =
+document.getElementById(
+"attDate"
+).value;
+
+let subject =
+document.getElementById(
+"attSubject"
+).value;
+
+
+if(!date || !subject){
+
+alert(
+"Please select date and subject."
+);
+
+return;
+
+}
+
+
+if(students.length===0){
+
+alert(
+"First add students."
+);
+
+return;
+
+}
+
+
+document.getElementById(
+"dailyPanel"
+)
+.classList.remove(
+"hidden"
+);
+
+
+document.getElementById(
+"dailyTitle"
+)
+.innerText =
+"Daily Attendance - "
++
+subject
++
+" - "
++
+date;
+
+
+let table =
+document.getElementById(
+"dailyTable"
+);
+
+table.innerHTML="";
+
+
+students.forEach(
+(s,i)=>{
+
+let row =
+table.insertRow();
+
+
+row.insertCell(0)
+.innerHTML=i+1;
+
+row.insertCell(1)
+.innerHTML=s.roll;
+
+row.insertCell(2)
+.innerHTML=s.name;
+
+row.insertCell(3)
+.innerHTML=s.course;
+
+row.insertCell(4)
+.innerHTML=s.semester;
+
+
+let cell =
+row.insertCell(5);
+
+
+let existing =
+attendance.find(
+a=>
+a.roll===s.roll &&
+a.date===date &&
+a.subject===subject
+);
+
+
+cell.innerHTML=
+
+`
+<select
+class="dailyStatus"
+data-roll="${s.roll}">
+
+<option value="P"
+${existing?.status==="P"?"selected":""}>
+Present
+</option>
+
+<option value="A"
+${existing?.status==="A"?"selected":""}>
+Absent
+</option>
+
+<option value="L"
+${existing?.status==="L"?"selected":""}>
+Leave
+</option>
+
+</select>
+`;
+
+});
+
+}
+
+
+/* =====================================================
+   SAVE DAILY ATTENDANCE
+===================================================== */
+
+function saveDailyAttendance(){
+
+let date =
+document.getElementById(
+"attDate"
+).value;
+
+let subject =
+document.getElementById(
+"attSubject"
+).value;
+
+
+let selects =
+document.querySelectorAll(
+".dailyStatus"
+);
+
+
+selects.forEach(
+select=>{
+
+let roll =
+select.dataset.roll;
+
+
+let index =
+attendance.findIndex(
+a=>
+a.roll===roll &&
+a.date===date &&
+a.subject===subject
+);
+
+
+let student =
+students.find(
+s=>s.roll===roll
+);
+
+
+let record={
+
+roll:roll,
+name:student.name,
+course:student.course,
+semester:student.semester,
+date:date,
+subject:subject,
+status:select.value
+
+};
+
+
+if(index>=0){
+
+attendance[index]=record;
+
+}else{
+
+attendance.push(record);
+
+}
+
+});
+
+
+saveData();
+
+refresh();
+
+alert(
+"Daily attendance saved successfully."
+);
+
+}
+
+
+/* =====================================================
+   MONTHLY REPORT
+===================================================== */
+
+function showMonthlyReport(){
+
+let month =
+document.getElementById(
+"reportMonth"
+).value;
+
+let subject =
+document.getElementById(
+"reportSubject"
+).value;
+
+
+if(!month)
+return;
+
+
+let year =
+Number(month.slice(0,4));
+
+let monthNumber =
+Number(month.slice(5,7));
+
+
+let days =
+new Date(
+year,
+monthNumber,
+0
+).getDate();
+
+
+let head =
+document.getElementById(
+"monthHead"
+);
+
+head.innerHTML="";
+
+
+let row =
+head.insertRow();
+
+
+row.insertCell(0)
+.innerHTML="Roll No.";
+
+row.insertCell(1)
+.innerHTML="Student";
+
+
+for(
+let d=1;
+d<=days;
+d++
+){
+
+row.insertCell(
+d+1
+).innerHTML=d;
+
+}
+
+
+row.insertCell(
+days+2
+).innerHTML="%";
+
+
+let body =
+document.getElementById(
+"monthBody"
+);
+
+body.innerHTML="";
+
+
+students.forEach(
+student=>{
+
+let row =
+body.insertRow();
+
+
+row.insertCell(0)
+.innerHTML=
+student.roll;
+
+row.insertCell(1)
+.innerHTML=
+student.name;
+
+
+let present=0;
+let total=0;
+
+
+for(
+let d=1;
+d<=days;
+d++
+){
+
+let date =
+month
++
+"-"
++
+String(d)
+.padStart(2,"0");
+
+
+let record =
+attendance.find(
+a=>
+a.roll===student.roll &&
+a.date===date &&
+(
+subject==="" ||
+a.subject===subject
+)
+);
+
+
+let cell =
+row.insertCell(
+d+1
+);
+
+
+if(record){
+
+cell.innerHTML =
+record.status;
+
+
+if(record.status==="P"){
+
+cell.className="p";
+present++;
+total++;
+
+}
+
+else if(
+record.status==="A"
+){
+
+cell.className="a";
+total++;
+
+}
+
+else{
+
+cell.className="l";
+
+}
+
+}else{
+
+cell.innerHTML="-";
+
+}
+
+}
+
+
+let percentage =
+total>0
+?
+(
+present/total*100
+).toFixed(1)
+:
+0;
+
+
+let pc =
+row.insertCell(
+days+2
+);
+
+pc.innerHTML =
+percentage+"%";
+
+pc.className =
+percentage<75
+?
+"low"
+:
+"good";
+
+});
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function updateDashboard(){
+
+document.getElementById(
+"studentCount"
+)
+.innerText=
+students.length;
+
+
+let classes =
+new Set(
+attendance.map(
+a=>
+a.date+"_"+a.subject
+)
+).size;
+
+
+document.getElementById(
+"classCount"
+)
+.innerText=
+classes;
+
+
+let present =
+attendance.filter(
+a=>a.status==="P"
+).length;
+
+
+let absent =
+attendance.filter(
+a=>a.status==="A"
+).length;
+
+
+document.getElementById(
+"presentCount"
+)
+.innerText=
+present;
+
+
+document.getElementById(
+"absentCount"
+)
+.innerText=
+absent;
+
+
+let percentages =
+students
+.map(
+s=>studentPercentage(s.roll)
+)
+.filter(
+x=>x>0
+);
+
+
+let average =
+percentages.length
+?
+(
+percentages.reduce(
+(a,b)=>a+b,
+0
+)
+/
+percentages.length
+).toFixed(1)
+:
+0;
+
+
+document.getElementById(
+"avgAttendance"
+)
+.innerText=
+average+"%";
+
+}
+
+
+/* =====================================================
+   CSV DOWNLOAD
+===================================================== */
+
+function downloadCSV(){
+
+if(attendance.length===0){
+
+alert(
+"No attendance data available."
+);
+
+return;
+
+}
+
+
+let csv =
+"Roll No,Student Name,Course,Semester,Date,Subject,Status\n";
+
+
+attendance.forEach(
+a=>{
+
+csv +=
+`"${a.roll}","${a.name}","${a.course}","${a.semester}","${a.date}","${a.subject}","${a.status}"\n`;
+
+});
+
+
+let blob =
+new Blob(
+[csv],
+{
+type:
+"text/csv;charset=utf-8;"
+}
+);
+
+
+let url =
+URL.createObjectURL(
+blob
+);
+
+
+let link =
+document.createElement("a");
+
+link.href=url;
+
+link.download=
+"College_Attendance_Report.csv";
+
+
+document.body.appendChild(link);
+
+link.click();
+
+document.body.removeChild(link);
+
+}
+
+
+/* =====================================================
+   DELETE ALL
+===================================================== */
+
+function deleteAllData(){
+
+if(
+!confirm(
+"WARNING! Delete ALL students, subjects and attendance?"
+)
+)
+return;
+
+
+localStorage.clear();
+
+students=[];
+subjects=[];
+attendance=[];
+college={};
+
+location.reload();
+
+}
+
+
+/* =====================================================
+   REFRESH
+===================================================== */
+
+function refresh(){
+
+loadSubjects();
+
+loadCourses();
+
+showStudents();
+
+showSubjects();
+
+updateDashboard();
+
+showMonthlyReport();
+
+}
+
+
+/* START */
+
+refresh();
+
+</script>
+
+</body>
+</html>
+```
